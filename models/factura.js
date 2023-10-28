@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     id_factura:{
       type:DataTypes.INTEGER,
       allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement:true
     },
     producto_id: DataTypes.INTEGER,
     cantidad: DataTypes.INTEGER,

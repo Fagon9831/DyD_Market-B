@@ -14,6 +14,11 @@ const schema = Joi.object({
     correo: Joi.string().email().required(),
     codeS: Joi.string().required(),
 })
+const schemaModificar = Joi.object({
+    direccion: Joi.string().required(),
+    telefono: Joi.number().required().min(3000000000).max(3999999999),
+    correo: Joi.string().email().required(),
+})
 const createEmpleado = async (req, res) => {
 
     const Empleados = models.Empleado
@@ -37,6 +42,7 @@ const createEmpleado = async (req, res) => {
 
         if (error) {
             res.status(500).json(error)
+            console.log(error)
         } else {
             const sessionC = await session.create({
                 id_session: codeS,
@@ -56,11 +62,15 @@ const createEmpleado = async (req, res) => {
                 correo: correo,
                 session_code: codeS
             })
+            res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
             res.json(`El usuario se ha creado exitosamente su usuario creado es:${nombre}`)
         }
 
     } catch (error) {
         res.status(500).json(error)
+        console.log(error)
     }
 
 }
@@ -68,6 +78,9 @@ const consultarEmpleados = async (req, res) => {
     const Empleados = models.Empleado
     try {
         const empleado = await Empleados.findAll()
+        res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
         res.status(200).json(empleado)
     } catch (error) {
         res.status(500).json(error)
@@ -77,18 +90,12 @@ const consultarEmpleados = async (req, res) => {
 const ModificarEmpleados = async (req, res) => {
     const Empleados = models.Empleado
     try {
-        const { nombre, apellido, direccion, telefono, ciudad_id, documento, documento_id, correo, session_code } = req.body
-        const id = req.params.id
-        const { error, value } = schema.validate({
-            "nombre": nombre,
-            "apellido": apellido,
+        const { direccion, telefono, correo } = req.body
+        const id = req.body.id_empleado
+        const { error, value } = schemaModificar.validate({
             "direccion": direccion,
-            "telefono": telefono,
-            "ciudad_id": ciudad_id,
-            "documento": documento,
-            "documento_id": documento_id,
-            "correo": correo,
-            "session_code": session_code
+            "telefono": telefono,          
+            "correo": correo            
         })
         if (error) {
             res.status(500).json(error)
@@ -98,17 +105,14 @@ const ModificarEmpleados = async (req, res) => {
                     "id_empleado": id
                 }
             })
-
-            empleado.nombre = nombre
-            empleado.apellido = apellido
+            
             empleado.direccion = direccion
             empleado.telefono = telefono
-            empleado.ciudad_id = ciudad_id
-            empleado.documento = documento
-            empleado.documento_id = documento_id
             empleado.correo = correo
-            empleado.session_code = session_code
             await empleado.save()
+            res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
             res.status(200).json(empleado)
         }
 
@@ -120,7 +124,7 @@ const EliminarEmpleados = async (req, res) => {
     const Empleados = models.Empleado
     const Sessiones = models.Session
     try {
-        const id = req.params.id        
+        const id = req.body.id_empleado        
         const empleado = await Empleados.destroy({
             where: {
                 "session_code": id
@@ -131,8 +135,12 @@ const EliminarEmpleados = async (req, res) => {
                 "id_session": id
             }
         })
+        res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
         res.status(200).json(`El empleado se ha eliminado correctamente`)
     } catch (error) {
+        console.log(error)
         res.status(500).json(error)        
     }
 }

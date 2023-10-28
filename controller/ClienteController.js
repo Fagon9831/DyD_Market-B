@@ -58,6 +58,9 @@ const createCliente = async (req, res) => {
                 correo: correo,
                 session_code: codeS
             })
+            res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
             res.json(`El usuario se ha creado exitosamente su usuario creado es:${nombre}`)
         }
 
@@ -70,6 +73,9 @@ const consultarClientes = async (req, res) => {
     const Clientes = models.Cliente
     try {
         const cliente = await Clientes.findAll()
+        res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
         res.status(200).json(cliente)
     } catch (error) {
         res.status(500).json(error)
@@ -111,6 +117,9 @@ const ModificarClientes = async (req, res) => {
             cliente.correo = correo
             cliente.session_code = session_code
             await cliente.save()
+            res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
             res.status(200).json(cliente)
         }
 
@@ -127,7 +136,10 @@ const EliminarClientes = async (req, res) => {
                 where:{
                   "id_cliente":id      
                 }
-              })              
+              })  
+              res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");            
             res.status(200).json(`El cliente se ha eliminado correctamente`)            
     } catch (error) {
         res.status(500).json(error)

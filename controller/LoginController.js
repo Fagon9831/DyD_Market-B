@@ -12,6 +12,9 @@ const iniciarSesion = async (req, res) => {
         const result =await session.findOne({
             where: { usuario: user }
         })
+        res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
         if(!result){//no existe
             res.status(401).json({msg:"Usuario y/o contraseña incorrectos"})
             return;
@@ -29,7 +32,7 @@ const iniciarSesion = async (req, res) => {
                 res.status(500).json({msg:err})
                 return;
             }else{
-                res.status(200).json({msg:"Token Creado",token:token})
+                res.status(200).json({msg:"Token Creado",token:token,code_s:result.id_session,tipo_s:result.tipo_id})
                 return
             }
         });
