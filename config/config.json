@@ -4,7 +4,7 @@
     "password": "B6c61aGd5cCc4DCaDD*-35ACaa*f*3G*",
     "database": "railway",
     "host": "monorail.proxy.rlwy.net",
-    "port": "26413",
+    "port": 26413,
     "dialect": "postgres",
     "define":{
       "timestamps": false
@@ -12,18 +12,23 @@
     "quoteIdentifiers": false
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
+    "username": "postgres",
+    "password": "B6c61aGd5cCc4DCaDD*-35ACaa*f*3G*",
+    "database": "railway",
+    "host": "monorail.proxy.rlwy.net",
+    "port": 26413,
+    "dialect": "postgres",
+    "define":{
+      "timestamps": false
+    },
+    "quoteIdentifiers": false  },
   "production": {
     "username": "postgres",
     "password": "B6c61aGd5cCc4DCaDD*-35ACaa*f*3G*",
     "database": "railway",
     "host": "monorail.proxy.rlwy.net",
     "dialect": "postgres",
+    "port": 26413,
     "define":{
       "timestamps": false
     },
